@@ -24,7 +24,7 @@ public class ValidateServiceImpl implements ValidationService {
         }
         if (film.getReleaseDate().isBefore(movieBirthday)) {
             log.debug("Дата релиза раньше 28 декабря 1985");
-            throw new ConditionsNotMetException("Дата релиза фильма не можеть быть раньше 28 декабря 1985");
+            throw new ConditionsNotMetException("Дата релиза фильма не можеть быть раньше 28 декабря 1895");
         }
         if (film.getDuration() <= 0) {
             log.debug("В продолжительности фильма указано отрицательное число");
@@ -64,7 +64,7 @@ public class ValidateServiceImpl implements ValidationService {
         if (newFilm.getReleaseDate() != null) {
             if (newFilm.getReleaseDate().isBefore(movieBirthday)) {
                 log.debug("Дата релиза укана ранее 28 декабря 1985");
-                throw new ConditionsNotMetException("Дата релиза фильма не можеть быть раньше 28 декабря 1985");
+                throw new ConditionsNotMetException("Дата релиза фильма не можеть быть раньше 28 декабря 1895");
             }
         }
         if (newFilm.getDuration() != null) {
