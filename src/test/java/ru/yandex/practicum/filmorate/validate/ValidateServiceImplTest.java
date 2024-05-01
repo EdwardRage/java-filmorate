@@ -15,6 +15,7 @@ public class ValidateServiceImplTest {
     private Film film;
     private User user;
     private final ValidateServiceImpl validate = new ValidateServiceImpl();
+
     @BeforeEach
     public void createFilmsForTests() {
         film = new Film();
@@ -35,6 +36,7 @@ public class ValidateServiceImplTest {
                 });
         Assertions.assertEquals("Название фильма должно быть указано", exception.getMessage());
     }
+
     @Test
     public void validateDescriptionMoreThanLimitCharacters() {
         film.setName("test film");
@@ -51,6 +53,7 @@ public class ValidateServiceImplTest {
                 });
         Assertions.assertEquals("Описание фильма не должно превышать 200 символов", exception.getMessage());
     }
+
     @Test
     public void validateReleaseDateAfterBirthdayFilm() {
         film.setName("test film");
@@ -64,6 +67,7 @@ public class ValidateServiceImplTest {
                 });
         Assertions.assertEquals("Дата релиза фильма не можеть быть раньше 28 декабря 1985", exception.getMessage());
     }
+
     @Test
     public void validateDurationMovieIsNegative() {
         film.setName("test film");
@@ -90,8 +94,8 @@ public class ValidateServiceImplTest {
                     validate.validateCreate(user);
                 });
         Assertions.assertEquals("Электронная почта не может быть пустой и должна содержать символ @", exception.getMessage());
-
     }
+
     @Test
     public void validateCreateUserWithoutDogInEmail() {
         user.setEmail("testTest.ru");
@@ -104,8 +108,8 @@ public class ValidateServiceImplTest {
                     validate.validateCreate(user);
                 });
         Assertions.assertEquals("Электронная почта не может быть пустой и должна содержать символ @", exception.getMessage());
-
     }
+
     @Test
     public void validateCreateUserWithoutLogin() {
         user.setEmail("test@Test.ru");
@@ -118,8 +122,8 @@ public class ValidateServiceImplTest {
                     validate.validateCreate(user);
                 });
         Assertions.assertEquals("Логин не должен быть пустым и содержать пробелы", exception.getMessage());
-
     }
+
     @Test
     public void validateCreateUserWithSpaceInLogin() {
         user.setEmail("test@Test.ru");
@@ -132,8 +136,8 @@ public class ValidateServiceImplTest {
                     validate.validateCreate(user);
                 });
         Assertions.assertEquals("Логин не должен быть пустым и содержать пробелы", exception.getMessage());
-
     }
+
     @Test
     public void validateCreateBirthdayInFuture() {
         user.setEmail("test@Test.ru");
@@ -165,6 +169,7 @@ public class ValidateServiceImplTest {
                 });
         Assertions.assertEquals("Описание фильма не должно превышать 200 символов", exception.getMessage());
     }
+
     @Test
     public void validateUpdateReleaseDateAfterBirthdayFilm() {
         film.setName("test film");
@@ -178,6 +183,7 @@ public class ValidateServiceImplTest {
                 });
         Assertions.assertEquals("Дата релиза фильма не можеть быть раньше 28 декабря 1985", exception.getMessage());
     }
+
     @Test
     public void validateUpdateDurationMovieIsNegative() {
         film.setName("test film");
@@ -191,6 +197,7 @@ public class ValidateServiceImplTest {
                 });
         Assertions.assertEquals("Продолжительность фильма может быть только положительным числом", exception.getMessage());
     }
+
     @Test
     public void validateUpdateCreateUserWithoutDogInEmail() {
         user.setEmail("testTest.ru");
@@ -217,8 +224,8 @@ public class ValidateServiceImplTest {
                     validate.validateUpdate(user);
                 });
         Assertions.assertEquals("Логин не должен содержать пробелы", exception.getMessage());
-
     }
+
     @Test
     public void validateUpdateCreateBirthdayInFuture() {
         user.setEmail("test@Test.ru");
