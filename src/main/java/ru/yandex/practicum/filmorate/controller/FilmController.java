@@ -19,7 +19,6 @@ public class FilmController {
     private final Map<Integer, Film> films = new HashMap<>();
     private int id = 0;
     private final ValidateServiceImpl validate = new ValidateServiceImpl();
-    
     @GetMapping
     public Collection<Film> getFilms() {
         return films.values();
@@ -33,6 +32,7 @@ public class FilmController {
         film.setId(generateId());
         films.put(film.getId(), film);
         log.info("Добавлен фильм");
+        
         return ResponseEntity.ok(film);
     }
 
@@ -68,5 +68,4 @@ public class FilmController {
     private int generateId() {
         return ++id;
     }
-
 }
