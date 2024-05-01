@@ -58,14 +58,14 @@ public class ValidateServiceImplTest {
     public void validateReleaseDateAfterBirthdayFilm() {
         film.setName("test film");
         film.setDescription("description film");
-        film.setReleaseDate(LocalDate.of(1985, Month.DECEMBER, 27));
+        film.setReleaseDate(LocalDate.of(1600, Month.DECEMBER, 27));
         film.setDuration(180);
 
         ConditionsNotMetException exception = Assertions
                 .assertThrows(ConditionsNotMetException.class, () -> {
                     validate.validateCreate(film);
                 });
-        Assertions.assertEquals("Дата релиза фильма не можеть быть раньше 28 декабря 1985", exception.getMessage());
+        Assertions.assertEquals("Дата релиза фильма не можеть быть раньше 28 декабря 1895", exception.getMessage());
     }
 
     @Test
@@ -174,14 +174,14 @@ public class ValidateServiceImplTest {
     public void validateUpdateReleaseDateAfterBirthdayFilm() {
         film.setName("test film");
         film.setDescription("description film");
-        film.setReleaseDate(LocalDate.of(1985, Month.DECEMBER, 27));
+        film.setReleaseDate(LocalDate.of(1785, Month.DECEMBER, 27));
         film.setDuration(180);
 
         ConditionsNotMetException exception = Assertions
                 .assertThrows(ConditionsNotMetException.class, () -> {
                     validate.validateUpdate(film);
                 });
-        Assertions.assertEquals("Дата релиза фильма не можеть быть раньше 28 декабря 1985", exception.getMessage());
+        Assertions.assertEquals("Дата релиза фильма не можеть быть раньше 28 декабря 1895", exception.getMessage());
     }
 
     @Test

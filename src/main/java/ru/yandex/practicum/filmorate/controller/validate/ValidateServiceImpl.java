@@ -10,7 +10,7 @@ import java.time.Month;
 
 @Slf4j
 public class ValidateServiceImpl implements ValidationService {
-    private final LocalDate movieBirthday = LocalDate.of(1985, Month.DECEMBER, 28);
+    private final LocalDate movieBirthday = LocalDate.of(1895, Month.DECEMBER, 28);
 
     @Override
     public void validateCreate(Film film) {

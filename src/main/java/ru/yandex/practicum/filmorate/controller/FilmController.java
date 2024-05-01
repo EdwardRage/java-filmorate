@@ -1,7 +1,6 @@
 package ru.yandex.practicum.filmorate.controller;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.controller.validate.ValidateServiceImpl;
 import ru.yandex.practicum.filmorate.exception.ConditionsNotMetException;
@@ -26,18 +25,18 @@ public class FilmController {
     }
 
     @PostMapping
-    public ResponseEntity<Film> create(@RequestBody Film film) {
+    public Film create(@RequestBody Film film) {
 
-        validate.validateUpdate(film);
+        validate.validateCreate(film);
 
         film.setId(generateId());
         films.put(film.getId(), film);
         log.info("Добавлен фильм");
-        return ResponseEntity.ok(film);
+        return film;
     }
 
     @PutMapping
-    public Film update(@RequestBody Film newFilm) {
+    public Film updateFilm(@RequestBody Film newFilm) {
         if (newFilm.getId() == null) {
             throw new ConditionsNotMetException("Id должен быть указан");
         }
@@ -58,11 +57,12 @@ public class FilmController {
                 validate.validateUpdate(newFilm);
                 oldFilm.setDuration(newFilm.getDuration());
             }
-            log.info("Данные фильма обновлены");
+            log.trace("Данные фильма обновлены");
             return oldFilm;
+        } else {
+            log.debug("Фильм не найден");
+            throw new NotFoundException("Фильм с идентификатором id = " + newFilm.getId() + " не найден");
         }
-        log.debug("Фильм не найден");
-        throw new NotFoundException("Фильм с идентификатором id = " + newFilm.getId() + " не найден");
     }
 
     private int generateId() {
