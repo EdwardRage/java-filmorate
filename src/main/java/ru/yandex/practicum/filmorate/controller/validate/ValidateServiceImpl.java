@@ -7,6 +7,7 @@ import ru.yandex.practicum.filmorate.model.User;
 
 import java.time.LocalDate;
 import java.time.Month;
+
 @Slf4j
 public class ValidateServiceImpl implements ValidationService {
     private final LocalDate movieBirthday = LocalDate.of(1985, Month.DECEMBER, 28);
@@ -25,11 +26,12 @@ public class ValidateServiceImpl implements ValidationService {
             log.debug("Дата релиза раньше 28 декабря 1985");
             throw new ConditionsNotMetException("Дата релиза фильма не можеть быть раньше 28 декабря 1985");
         }
-        if (film.getDuration() <= 0 ) {
+        if (film.getDuration() <= 0) {
             log.debug("В продолжительности фильма указано отрицательное число");
             throw  new ConditionsNotMetException("Продолжительность фильма может быть только положительным числом");
         }
     }
+
     @Override
     public void validateCreate(User user) {
 
@@ -66,7 +68,7 @@ public class ValidateServiceImpl implements ValidationService {
             }
         }
         if (newFilm.getDuration() != null) {
-            if (newFilm.getDuration() <= 0 ) {
+            if (newFilm.getDuration() <= 0) {
                 log.debug("Указано отрицательное число в продолжительности фильма");
                 throw  new ConditionsNotMetException("Продолжительность фильма может быть только положительным числом");
             }
