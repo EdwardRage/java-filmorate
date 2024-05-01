@@ -55,7 +55,7 @@ public class ValidateServiceImplTest {
     }
 
     @Test
-    public void validateReleaseDateAfterBirthdayFilm() {
+    public void validateCreateReleaseDateAfterBirthdayFilm() {
         film.setName("test film");
         film.setDescription("description film");
         film.setReleaseDate(LocalDate.of(1600, Month.DECEMBER, 27));
