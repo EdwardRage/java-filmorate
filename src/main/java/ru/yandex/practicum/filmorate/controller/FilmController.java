@@ -39,7 +39,7 @@ public class FilmController {
     @PutMapping
     public Film update(@RequestBody Film newFilm) {
         if (newFilm.getId() == null) {
-            throw new ConditionsNotMetException("Id фильма должен быть указан");
+            throw new ConditionsNotMetException("Id должен быть указан");
         }
         if (films.containsKey(newFilm.getId())) {
             Film oldFilm = films.get(newFilm.getId());
