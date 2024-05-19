@@ -18,8 +18,6 @@ public class ErrorHandle {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ErrorResponse handleException(final Exception e) {
         log.warn("Error", e);
-        ErrorResponse errorResponse = new ErrorResponse(e.getMessage());
-        //errorResponse.setStackTrace();
         return new ErrorResponse(e.getMessage());
     }
 
