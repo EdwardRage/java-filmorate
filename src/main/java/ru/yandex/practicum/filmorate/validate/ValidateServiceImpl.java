@@ -1,6 +1,7 @@
-package ru.yandex.practicum.filmorate.controller.validate;
+package ru.yandex.practicum.filmorate.validate;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.exception.ConditionsNotMetException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.User;
@@ -9,6 +10,7 @@ import java.time.LocalDate;
 import java.time.Month;
 
 @Slf4j
+@Component
 public class ValidateServiceImpl implements ValidationService {
     private final LocalDate movieBirthday = LocalDate.of(1895, Month.DECEMBER, 28);
 
@@ -95,5 +97,9 @@ public class ValidateServiceImpl implements ValidationService {
                 throw new ConditionsNotMetException("Электронная почта должна содержать символ @");
             }
         }
+    }
+
+    public void checkingForUsers(int userId) {
+
     }
 }
