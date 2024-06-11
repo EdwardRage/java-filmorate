@@ -4,6 +4,8 @@ import lombok.Data;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.util.Collection;
+import java.util.Set;
 
 /**
  * Film.
@@ -16,4 +18,9 @@ public class Film {
     private String description;
     private LocalDate releaseDate;
     private Integer duration;
+    private Mpa mpa;
+    private Set<Genre> genre;
 }
+
+
+

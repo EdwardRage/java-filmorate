@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.service.FilmService;
+import ru.yandex.practicum.filmorate.service.FilmServiceImpl;
 
 import java.util.Collection;
 import java.util.List;
@@ -13,41 +14,41 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/films")
 public class FilmController {
-    private final FilmService filmService;
+    private final FilmService filmServiceImpl;
 
     @GetMapping
     public Collection<Film> getFilms() {
-        return filmService.get();
+        return filmServiceImpl.get();
     }
 
     @GetMapping("/{filmId}")
     public Film getFilmById(@PathVariable int filmId) {
-        return filmService.getFilmById(filmId);
+        return filmServiceImpl.getFilmById(filmId);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Film create(@RequestBody Film film) {
-        return filmService.create(film);
+        return filmServiceImpl.create(film);
     }
 
     @PutMapping
     public Film update(@RequestBody Film newFilm) {
-        return filmService.update(newFilm);
+        return filmServiceImpl.update(newFilm);
     }
 
     @PutMapping("/{filmId}/like/{userId}")
     public void addLike(@PathVariable int filmId, @PathVariable int userId) {
-        filmService.addLike(filmId, userId);
+        filmServiceImpl.addLike(filmId, userId);
     }
 
     @DeleteMapping("/{filmId}/like/{userId}")
     public void deleteLike(@PathVariable int filmId, @PathVariable int userId) {
-        filmService.deleteLike(filmId, userId);
+        filmServiceImpl.deleteLike(filmId, userId);
     }
 
     @GetMapping("/popular")
     public List<Film> getMostPopularFilms(@RequestParam(required = false) Integer count) {
-        return filmService.getMostPopularFilms(count);
+        return filmServiceImpl.getTopPopularFilms(count);
     }
 }

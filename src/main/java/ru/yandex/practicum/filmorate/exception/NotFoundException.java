@@ -1,6 +1,8 @@
 package ru.yandex.practicum.filmorate.exception;
 
-public class NotFoundException extends RuntimeException {
+import org.springframework.dao.DataAccessException;
+
+public class NotFoundException extends DataAccessException {
     public NotFoundException(String message) {
         super(message);
     }

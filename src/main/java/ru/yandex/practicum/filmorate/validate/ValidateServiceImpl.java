@@ -98,8 +98,4 @@ public class ValidateServiceImpl implements ValidationService {
             }
         }
     }
-
-    public void checkingForUsers(int userId) {
-
-    }
 }
