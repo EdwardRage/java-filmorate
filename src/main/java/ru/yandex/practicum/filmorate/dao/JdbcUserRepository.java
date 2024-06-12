@@ -1,7 +1,10 @@
 package ru.yandex.practicum.filmorate.dao;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Repository;
 import ru.yandex.practicum.filmorate.model.User;
@@ -28,16 +31,14 @@ public class JdbcUserRepository implements UserRepository {
         String sql = "SELECT * FROM USERS WHERE USER_ID = :userId";
         Map<String, Object> params = new HashMap<>();
         params.put("userId", userId);
-        User user = jdbc.queryForObject(sql, params, this::makeUser);
-        //User user1 = jdbc.getJdbcOperations().queryForObject(sql, params, this::makeUser);
-        return Optional.ofNullable(user);
-    }
 
-    /*@Override
-    public User getUserById(long userId) {
-        String sql = "SELECT * FROM users WHERE user_id = :userId";
-        return jdbc.queryForObject(sql, Map.of("userId", userId), this::makeUser);
-    }*/
+        try {
+            User user = jdbc.queryForObject(sql, params, this::makeUser);
+            return Optional.ofNullable(user);
+        } catch (EmptyResultDataAccessException e) {
+            return Optional.empty();
+        }
+    }
 
     @Override
     public User create(User user) {
@@ -45,13 +46,15 @@ public class JdbcUserRepository implements UserRepository {
         GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();
         String sql = "INSERT INTO USERS (EMAIL, LOGIN, NAME, BIRTHDAY) " +
                 "VALUES ( :EMAIL, :LOGIN, :NAME,  :BIRTHDAY)";
-        Map<String, Object> params = new HashMap<>();
-        params.put("EMAIL", user.getEmail());
-        params.put("LOGIN", user.getLogin());
-        params.put("NAME", user.getName());
-        params.put("BIRTHDAY", user.getBirthday());
 
-        jdbc.update(sql, params);
+        SqlParameterSource params = new MapSqlParameterSource()
+                .addValues(Map.of("EMAIL", user.getEmail()))
+                .addValues(Map.of("LOGIN", user.getLogin()))
+                .addValues(Map.of("NAME", user.getName()))
+                .addValues(Map.of("BIRTHDAY", user.getBirthday()));
+
+        jdbc.update(sql, params, keyHolder, new String[]{"USER_ID"});
+
         user.setId(keyHolder.getKeyAs(Long.class));
         return user;
     }
@@ -61,17 +64,15 @@ public class JdbcUserRepository implements UserRepository {
 
         String sql = "UPDATE USERS SET EMAIL = :EMAIL, LOGIN = :LOGIN, NAME = :NAME, BIRTHDAY = :BIRTHDAY " +
         "WHERE USER_ID = :userId";
-        Map<String, Object> params = new HashMap<>();
-        params.put("userId", user.getId());
-        params.put("EMAIL", user.getEmail());
-        params.put("LOGIN", user.getLogin());
-        params.put("NAME", user.getName());
-        params.put("BIRTHDAY", user.getBirthday());
-        /*int rowCount = */
+        MapSqlParameterSource params = new MapSqlParameterSource()
+                .addValues(Map.of("userId", user.getId()))
+                .addValues(Map.of("EMAIL", user.getEmail()))
+                .addValues(Map.of("LOGIN", user.getLogin()))
+                .addValues(Map.of("NAME", user.getName()))
+                .addValues(Map.of("BIRTHDAY", user.getBirthday()));
+
         jdbc.update(sql, params);
-        /*if (rowCount != 1) {
-            throw new NotFoundException("Пользователь не найден");
-        }*/
+
         return user;
     }
 
@@ -83,7 +84,7 @@ public class JdbcUserRepository implements UserRepository {
 
     @Override
     public void deleteFriend(long userId, long friendId) {
-        String sql = "DELETE INTO FRIENDS (USER_ID, FRIEND_ID) VALUES ( :userId, :friendId)";
+        String sql = "DELETE FROM FRIENDS WHERE USER_ID = :userId AND FRIEND_ID = :friendId";
         jdbc.update(sql, Map.of("userId", userId, "friendId", friendId));
     }
 
@@ -92,6 +93,10 @@ public class JdbcUserRepository implements UserRepository {
 
         return jdbc.query(sql, Map.of("userId", userId), this::makeUser);
     }
+
+    /*public List<User> getCommonFriends(long userId, long friendId) {
+        String sql = "SELECT * FROM FRIENDS"
+    }*/
 
     private User makeUser(ResultSet rs, int rowNum) throws SQLException {
 

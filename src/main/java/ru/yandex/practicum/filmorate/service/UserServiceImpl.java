@@ -40,12 +40,9 @@ public class UserServiceImpl implements UserService {
     }
 
     public User update(User newUser) {
-        if (newUser.getId() == null) {
-            throw new ConditionsNotMetException("Id должен быть указан");
-        }
-
-        User oldUser = jdbcUser.getUserById(newUser.getId())
+        User oldUser =jdbcUser.getUserById(newUser.getId())
                 .orElseThrow(() -> new NotFoundException("Пользователь с Id = " + newUser.getId() + " не найден"));
+
         if (newUser.getName() != null) {
             oldUser.setName(newUser.getName());
         }

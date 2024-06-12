@@ -51,9 +51,14 @@ public class JdbcFilmRepository implements FilmRepository/*, MpaRepository*/ {
             // добавляем жанры
         }*/
         // возвращаем фильм return film
-        String sql = "SELECT * FROM FILMS AS f " +
+        /*String sql = "SELECT * FROM FILMS AS f " +
                      "LEFT JOIN MPA AS m ON m.MPA_ID = f.MPA_ID " +
-                     "WHERE f.FILM_ID = :filmsId";
+                     "WHERE f.FILM_ID = :filmsId";*/
+        String sql = "SELECT f.NAME, f.DESCRIPTION, f.RELEASE_DATE, f.DURATION, G2.GENRE, m.MPA  FROM FILMS as f" +
+        "left join FILM_GENRE FG on f.FILM_ID = FG.FILMS_ID" +
+        "left join GENRES G2 on G2.GENRE_ID = FG.GENRE_ID" +
+        "left join MPA M on M.MPA_ID = f.MPA_ID" +
+        "WHERE FILM_ID = :filmId";
         Map<String, Object> params = new HashMap<>();
         params.put("filmsId", filmId);
         return Optional.ofNullable(jdbc.queryForObject(sql, params, this::makeFilm));
@@ -64,9 +69,12 @@ public class JdbcFilmRepository implements FilmRepository/*, MpaRepository*/ {
     public Film create(Film film) {
         GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();
 
-        String sql = "INSERT INTO FILMS (NAME, DESCRIPTION, " +
+        /*String sql = "INSERT INTO FILMS (NAME, DESCRIPTION, " +
                 "RELEASE_DATE, DURATION, MPA_ID)" +
-                " VALUES (:NAME, :DESCRIPTION, :RELEASE_DATE, :DURATION, :MPA_ID";
+                " VALUES (:NAME, :DESCRIPTION, :RELEASE_DATE, :DURATION, :MPA_ID";*/
+
+        String sql = "INSERT INTO FILMS (NAME, DESCRIPTION, RELEASE_DATE, DURATION, MPA_ID) " +
+        "VALUES ( :NAME, :DESCRIPTION, :RELEASE_DATE, :DURATION, :MPA_ID ) RETURNING FILM_ID";
 
         /*"INSERT INTO FILMS (NAME, DESCRIPTION, RELEASE_DATE, DURATION, MPA_ID)
         VALUES ( :NAME, :DESCRIPTION, :RELEASE_DATE, :DURATION, :MPA_ID )";*/
@@ -89,7 +97,7 @@ public class JdbcFilmRepository implements FilmRepository/*, MpaRepository*/ {
         // создать связи фильмы-жанры
         // batch в него оборавичаются sql запросы
         //film.setId(keyHolder.getKeyAs(Long.class));
-        film.setId(keyHolder.getKeyAs(Long.class));
+        film.setId(Objects.requireNonNull(keyHolder.getKeyAs(Long.class)));
         return film;
     }
 

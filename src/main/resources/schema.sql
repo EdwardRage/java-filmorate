@@ -41,7 +41,7 @@ create table if not exists FILM_GENRE
 
 create table if not exists USERS
 (
-    USER_ID  INTEGER auto_increment,
+    USER_ID  BIGINT auto_increment,
     EMAIL    CHARACTER VARYING(255) not null,
     LOGIN    CHARACTER VARYING(255) not null,
     NAME     CHARACTER VARYING(255),

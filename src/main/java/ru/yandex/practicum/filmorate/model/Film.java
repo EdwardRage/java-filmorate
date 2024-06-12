@@ -11,7 +11,6 @@ import java.util.Set;
  * Film.
  */
 @Data
-@Component
 public class Film {
     private long id;
     private String name;
