@@ -1,15 +1,22 @@
-create table IF NOT EXISTS GENRES
+DROP TABLE IF EXISTS USERS CASCADE ;
+DROP TABLE IF EXISTS FRIENDS CASCADE ;
+DROP TABLE IF EXISTS GENRES CASCADE ;
+DROP TABLE IF EXISTS FILM_GENRE CASCADE ;
+DROP TABLE IF EXISTS MPA CASCADE ;
+DROP TABLE IF EXISTS FILMS CASCADE ;
+
+create table if not exists GENRES
 (
-    GENRE_ID INTEGER auto_increment not null,
-    GENRE    CHARACTER VARYING(50) not null,
+    GENRE_ID INTEGER                not null,
+    GENRE_NAME     CHARACTER VARYING(255) not null,
     constraint GENRE_PK
         primary key (GENRE_ID)
 );
 
-create table IF NOT EXISTS MPA
+create table if not exists MPA
 (
-    MPA_ID INTEGER auto_increment not null,
-    MPA    CHARACTER VARYING(50) not null,
+    MPA_ID INTEGER                not null,
+    MPA_NAME   CHARACTER VARYING(255) not null,
     constraint MPA_PK
         primary key (MPA_ID)
 );
@@ -17,7 +24,7 @@ create table IF NOT EXISTS MPA
 
 create table if not exists FILMS
 (
-    FILM_ID      INTEGER auto_increment,
+    FILM_ID      BIGINT auto_increment,
     NAME         CHARACTER VARYING(100) not null,
     DESCRIPTION  CHARACTER VARYING(255) not null,
     RELEASE_DATE DATE                   not null,
@@ -29,12 +36,13 @@ create table if not exists FILMS
         foreign key (MPA_ID) references MPA
 );
 
+
 create table if not exists FILM_GENRE
 (
-    FILMS_ID INTEGER not null,
+    FILM_ID  BIGINT  not null,
     GENRE_ID INTEGER not null,
     constraint FILM_GENRE__FILMS__FK
-        foreign key (FILMS_ID) references FILMS,
+        foreign key (FILM_ID) references FILMS,
     constraint FILM_GENRE__GENRES_FK
         foreign key (GENRE_ID) references GENRES
 );

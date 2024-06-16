@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface FilmRepository {
+
     Collection<Film> get();
 
     Optional<Film> getFilmById(long filmId);
@@ -19,6 +20,9 @@ public interface FilmRepository {
 
     void deleteLike(long filmId, long userId);
 
+    Optional<Film> getFilmWithGenre(long filmId);
+
     List<Integer> getLikes(long filmsId);
+
     List<Film> getTopPopular(int count);
 }

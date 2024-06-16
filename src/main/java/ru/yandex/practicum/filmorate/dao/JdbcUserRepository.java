@@ -21,7 +21,7 @@ public class JdbcUserRepository implements UserRepository {
     @Override
     public Collection<User> get() {
         String sql = "SELECT * FROM USERS";
-        //return jdbc.getJdbcOperations().query(sql, this::makeUser);
+
         return jdbc.query(sql, this::makeUser);
     }
 
@@ -29,8 +29,8 @@ public class JdbcUserRepository implements UserRepository {
     public Optional<User> getUserById(long userId) {
 
         String sql = "SELECT * FROM USERS WHERE USER_ID = :userId";
-        Map<String, Object> params = new HashMap<>();
-        params.put("userId", userId);
+        SqlParameterSource params = new MapSqlParameterSource()
+                .addValues(Map.of("userId", userId));
 
         try {
             User user = jdbc.queryForObject(sql, params, this::makeUser);
@@ -93,10 +93,6 @@ public class JdbcUserRepository implements UserRepository {
 
         return jdbc.query(sql, Map.of("userId", userId), this::makeUser);
     }
-
-    /*public List<User> getCommonFriends(long userId, long friendId) {
-        String sql = "SELECT * FROM FRIENDS"
-    }*/
 
     private User makeUser(ResultSet rs, int rowNum) throws SQLException {
 

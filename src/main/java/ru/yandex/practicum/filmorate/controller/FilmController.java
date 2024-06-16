@@ -5,7 +5,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.service.FilmService;
-import ru.yandex.practicum.filmorate.service.FilmServiceImpl;
 
 import java.util.Collection;
 import java.util.List;
@@ -22,8 +21,8 @@ public class FilmController {
     }
 
     @GetMapping("/{filmId}")
-    public Film getFilmById(@PathVariable int filmId) {
-        return filmServiceImpl.getFilmById(filmId);
+    public Film getFilmWithGenre(@PathVariable long filmId) {
+        return filmServiceImpl.getFilmWithGenre(filmId);
     }
 
     @PostMapping

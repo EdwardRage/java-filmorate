@@ -1,11 +1,9 @@
 package ru.yandex.practicum.filmorate.model;
 
 import lombok.Data;
-import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
-import java.util.Collection;
-import java.util.Set;
+import java.util.LinkedHashSet;
 
 /**
  * Film.
@@ -18,7 +16,7 @@ public class Film {
     private LocalDate releaseDate;
     private Integer duration;
     private Mpa mpa;
-    private Set<Genre> genre;
+    private LinkedHashSet<Genre> genres = new LinkedHashSet<>();
 }
 
 

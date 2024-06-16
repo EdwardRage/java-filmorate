@@ -21,5 +21,7 @@ public interface FilmService {
 
     List<Integer> getLikes(long filmId);
 
+    Film getFilmWithGenre(long filmId);
+
     List<Film> getTopPopularFilms(int count);
 }

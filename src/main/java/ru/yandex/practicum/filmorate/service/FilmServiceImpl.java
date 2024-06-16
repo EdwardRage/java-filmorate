@@ -1,18 +1,18 @@
 package ru.yandex.practicum.filmorate.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.dao.FilmRepository;
 import ru.yandex.practicum.filmorate.dao.UserRepository;
-import ru.yandex.practicum.filmorate.validate.ValidateServiceImpl;
 import ru.yandex.practicum.filmorate.validate.ValidationService;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class FilmServiceImpl implements FilmService {
@@ -42,6 +42,7 @@ public class FilmServiceImpl implements FilmService {
         Film oldFilm = jdbcFilm.getFilmById(newFilm.getId())
                 .orElseThrow(() -> new NotFoundException("Фильм с идентификатором id = " + newFilm.getId() + " не найден"));
 
+        log.info("Получен пользователь по идентификатору");
         if (newFilm.getName() != null) {
             oldFilm.setName(newFilm.getName());
         }
@@ -57,7 +58,14 @@ public class FilmServiceImpl implements FilmService {
             validate.validateUpdate(newFilm);
             oldFilm.setDuration(newFilm.getDuration());
         }
-        return jdbcFilm.create(oldFilm);
+        if (newFilm.getMpa() != null) {
+            oldFilm.setMpa(newFilm.getMpa());
+        }
+        if (newFilm.getGenres() != null) {
+            oldFilm.setGenres(newFilm.getGenres());
+        }
+        log.info("Пользователь обновлен");
+        return jdbcFilm.update(oldFilm);
     }
 
     @Override
@@ -88,31 +96,13 @@ public class FilmServiceImpl implements FilmService {
     }
 
     @Override
+    public Film getFilmWithGenre(long filmId) {
+        return jdbcFilm.getFilmWithGenre(filmId)
+                .orElseThrow(() -> new NotFoundException("Фильм с id = " + filmId + " не найден."));
+    }
+
+    @Override
     public List<Film> getTopPopularFilms(int count) {
-        if (count == 0) {
-            count = 10;
-        }
-
-        Map<Long, Integer> likesMap = new HashMap<>();
-        for (Film film : jdbcFilm.get()) {
-            if (jdbcFilm.getLikes(film.getId()) != null) {
-                int setSize = jdbcFilm.getLikes(film.getId()).size();
-                likesMap.put(film.getId(), setSize);
-            }
-        }
-
-        Map<Long, Integer> sortedMap = likesMap.entrySet()
-                .stream()
-                .sorted(Map.Entry.<Long, Integer>comparingByValue(Comparator.reverseOrder()))
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (a, b) -> a, LinkedHashMap::new));
-
-        List<Film> popularFilms = new ArrayList<>();
-        for (Long sortedFilmIdD : sortedMap.keySet()) {
-            Film film = jdbcFilm.getFilmById(sortedFilmIdD)
-                    .orElseThrow(() -> new NotFoundException("Фильм с идентификатором id = "
-                            + sortedFilmIdD + " не найден"));
-            popularFilms.add(film);
-        }
-        return popularFilms.stream().limit(count).collect(Collectors.toList());
+        return jdbcFilm.getTopPopular(count);
     }
 }

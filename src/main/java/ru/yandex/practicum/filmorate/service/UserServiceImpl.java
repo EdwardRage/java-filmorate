@@ -3,7 +3,6 @@ package ru.yandex.practicum.filmorate.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.dao.UserRepository;
-import ru.yandex.practicum.filmorate.exception.ConditionsNotMetException;
 import ru.yandex.practicum.filmorate.exception.DuplicatedDataException;
 import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.model.User;
@@ -40,7 +39,7 @@ public class UserServiceImpl implements UserService {
     }
 
     public User update(User newUser) {
-        User oldUser =jdbcUser.getUserById(newUser.getId())
+        User oldUser = jdbcUser.getUserById(newUser.getId())
                 .orElseThrow(() -> new NotFoundException("Пользователь с Id = " + newUser.getId() + " не найден"));
 
         if (newUser.getName() != null) {
