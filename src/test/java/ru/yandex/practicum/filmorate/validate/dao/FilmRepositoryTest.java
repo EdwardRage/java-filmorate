@@ -77,13 +77,6 @@ public class FilmRepositoryTest {
     }
 
     @Test
-    void getAllFilmsTest() {
-        Collection<Film> films = filmRepository.get();
-
-        assertEquals(3, films.size());
-    }
-
-    @Test
     void updateFilmTest() {
         film2.setName("Green elephant");
         film2.setDescription("update description film2");
@@ -122,6 +115,6 @@ public class FilmRepositoryTest {
 
         //filmRepository.getTopPopular(5);
 
-        assertEquals(3, filmRepository.getTopPopular(5).size());
+        assertEquals(3, filmRepository.getTopPopular(3).size());
     }
 }

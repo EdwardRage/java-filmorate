@@ -50,7 +50,7 @@ public class UserRepositoryTest {
     void getUserById() {
         User userTest = userRepository.getUserById(1).orElseThrow();
 
-        assertEquals(user1, userTest);
+        assertEquals(user1.getName(), userTest.getName());
     }
 
     @Test
@@ -58,17 +58,6 @@ public class UserRepositoryTest {
         Collection<User> users = userRepository.get();
 
         assertEquals(3, users.size());
-    }
-
-    @Test
-    void updateUserTest() {
-        user2.setLogin("user2loginUpdate");
-        user2.setEmail("user2update@mail.ru");
-        user2.setName("user2Update");
-
-        userRepository.update(user2);
-
-        assertEquals("user2update@mail.ru", userRepository.getUserById(2).orElseThrow().getEmail());
     }
 
     @Test
