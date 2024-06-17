@@ -24,18 +24,21 @@ public class ErrorHandle {
     @ExceptionHandler
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorResponse handleNotFound(final NotFoundException e) {
+        log.error("NotFoundException Error", e);
         return new ErrorResponse(e.getMessage());
     }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse handleConditionsNotMet(final ConditionsNotMetException e) {
+        log.error("ConditionsNotMetException Error", e);
         return new ErrorResponse(e.getMessage());
     }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse handleDuplicateData(final DuplicatedDataException e) {
+        log.error("DuplicatedDataException Error", e);
         return new ErrorResponse(e.getMessage());
     }
 }
