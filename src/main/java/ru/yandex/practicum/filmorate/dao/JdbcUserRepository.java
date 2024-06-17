@@ -78,7 +78,12 @@ public class JdbcUserRepository implements UserRepository {
 
     @Override
     public void addFriend(long userId, long friendId) {
-        String sql = "INSERT INTO FRIENDS (USER_ID, FRIEND_ID) VALUES ( :userId, :friendId)";
+        String sql = "INSERT INTO FRIENDS (USER_ID, FRIEND_ID) " +
+                "SELECT :userId, :friendId " +
+                "WHERE NOT EXISTS (" +
+                "SELECT 1 FROM FRIENDS " +
+                "WHERE USER_ID = :userId AND FRIEND_ID = :friendId)";
+
         jdbc.update(sql, Map.of("userId", userId,"friendId", friendId));
     }
 

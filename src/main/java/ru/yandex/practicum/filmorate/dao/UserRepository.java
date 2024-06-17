@@ -20,6 +20,4 @@ public interface UserRepository {
     void deleteFriend(long userId, long friendId);
 
     List<User> getFriends(long userId);
-
-    //Set<User> getFriends(User user);
 }

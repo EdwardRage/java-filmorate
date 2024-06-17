@@ -13,41 +13,41 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/films")
 public class FilmController {
-    private final FilmService filmServiceImpl;
+    private final FilmService filmService;
 
     @GetMapping
     public Collection<Film> getFilms() {
-        return filmServiceImpl.get();
+        return filmService.get();
     }
 
     @GetMapping("/{filmId}")
     public Film getFilmWithGenre(@PathVariable long filmId) {
-        return filmServiceImpl.getFilmWithGenre(filmId);
+        return filmService.getFilmWithGenre(filmId);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Film create(@RequestBody Film film) {
-        return filmServiceImpl.create(film);
+        return filmService.create(film);
     }
 
     @PutMapping
     public Film update(@RequestBody Film newFilm) {
-        return filmServiceImpl.update(newFilm);
+        return filmService.update(newFilm);
     }
 
     @PutMapping("/{filmId}/like/{userId}")
     public void addLike(@PathVariable int filmId, @PathVariable int userId) {
-        filmServiceImpl.addLike(filmId, userId);
+        filmService.addLike(filmId, userId);
     }
 
     @DeleteMapping("/{filmId}/like/{userId}")
     public void deleteLike(@PathVariable int filmId, @PathVariable int userId) {
-        filmServiceImpl.deleteLike(filmId, userId);
+        filmService.deleteLike(filmId, userId);
     }
 
     @GetMapping("/popular")
     public List<Film> getMostPopularFilms(@RequestParam(required = false) Integer count) {
-        return filmServiceImpl.getTopPopularFilms(count);
+        return filmService.getTopPopularFilms(count);
     }
 }

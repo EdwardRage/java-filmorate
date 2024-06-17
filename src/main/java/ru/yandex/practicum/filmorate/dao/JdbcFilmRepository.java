@@ -118,7 +118,12 @@ public class JdbcFilmRepository implements FilmRepository {
 
     @Override
     public void addLike(long filmId, long userId) {
-        String sql = "INSERT INTO LIKES (FILM_ID, USER_ID) VALUES (:filmId, :userId)";
+        String sql = "INSERT INTO LIKES (FILM_ID, USER_ID) " +
+                "SELECT :filmId, :userId " +
+                "WHERE NOT EXISTS ( " +
+                "SELECT 1 FROM LIKES " +
+                "WHERE FILM_ID = :filmId AND USER_ID = :userId)";
+
         SqlParameterSource params = new MapSqlParameterSource()
                 .addValues(Map.of("filmId", filmId))
                 .addValues(Map.of("userId", userId));
